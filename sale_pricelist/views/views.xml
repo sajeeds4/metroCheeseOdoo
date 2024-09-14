@@ -7,6 +7,11 @@
             <!-- Locate the order line tree view in the sale order form -->
             <xpath expr="//form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='price_unit']"
                    position="before">
+                <field name="secondary_pricelist_id" invisible="1"/>
+            </xpath>
+<!--                <field name="secondary_pricelist_id"/>-->
+            <xpath expr="//form/sheet/group[@name='sale_header']/group[@name='order_details']/field[@name='payment_term_id']"
+                   position="before">
                 <field name="secondary_pricelist_id"/>
             </xpath>
         </field>

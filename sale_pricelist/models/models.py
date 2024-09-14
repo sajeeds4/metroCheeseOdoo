@@ -2,12 +2,19 @@
 from odoo import api, fields, models
 
 
-class SaleOrderLinePricelist(models.Model):
-    _inherit = 'sale.order.line'
+class SaleOrderPricelist(models.Model):
+    _inherit = 'sale.order'
 
     secondary_pricelist_id = fields.Many2one(
         'product.pricelist', string='Secondary Pricelist',
         help='Select a secondary pricelist for price comparison.'
+    )
+
+class SaleOrderLinePricelist(models.Model):
+    _inherit = 'sale.order.line'
+
+    secondary_pricelist_id = fields.Many2one(
+        'product.pricelist', related='order_id.secondary_pricelist_id'
     )
 
     @api.onchange('product_id', 'product_uom_qty', 'secondary_pricelist_id')
