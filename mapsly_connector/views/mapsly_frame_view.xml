@@ -1,0 +1,13 @@
+<odoo>
+    <!-- Define the menu item -->
+    <menuitem id="menu_mapsly_frame" name="Mapsly" web_icon="mapsly_connector,static/description/icon.png"/>
+
+    <!-- Define the action to open the Owl component -->
+    <record id="action_mapsly_frame" model="ir.actions.client">
+        <field name="name">Mapsly</field>
+        <field name="tag">mapsly_frame_view</field>
+    </record>
+
+    <!-- Link the action to the menu item -->
+    <menuitem id="menu_mapsly_frame_action" name="Mapsly" parent="menu_mapsly_frame" action="action_mapsly_frame"/>
+</odoo>
