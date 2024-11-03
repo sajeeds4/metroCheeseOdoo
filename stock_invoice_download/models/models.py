@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
+
     def action_create_invoice_for_picked_qty(self):
         """Generate an invoice for only the picked quantities, link it to the sales order, and keep it in draft state."""
         sale_order = self.sale_id
@@ -23,6 +24,16 @@ class StockPicking(models.Model):
                         'price_unit': sale_line.price_unit,
                         'sale_line_ids': [(6, 0, [sale_line.id])],  # Link to sale order line
                     })
+                elif move_line.picking_id.picking_type_id.code == 'internal' and move_line.picking_id.sale_id:
+                    for line in move_line.picking_id.sale_id.order_line:
+                        if line.product_id.id == move_line.product_id.id:
+                            invoice_line_vals.append({
+                                'product_id': move_line.product_id.id,
+                                'quantity': move_line.qty_done,
+                                'price_unit': sale_line.price_unit,
+                                'sale_line_ids': [(6, 0, [line.id])],  # Link to sale order line
+                            })
+
 
         # Create the invoice in draft state
         if invoice_line_vals:
