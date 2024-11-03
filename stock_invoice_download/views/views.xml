@@ -9,7 +9,8 @@
                         string="Generate Invoice"
                         type="object"
                         class="btn-primary"
-                        attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                        invisible="state != 'done'"/>
+
             </xpath>
         </field>
     </record>
