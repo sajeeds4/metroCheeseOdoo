@@ -30,7 +30,7 @@ class StockPicking(models.Model):
                             invoice_line_vals.append({
                                 'product_id': move_line.product_id.id,
                                 'quantity': move_line.qty_done,
-                                'price_unit': sale_line.price_unit,
+                                'price_unit': line.price_unit,
                                 'sale_line_ids': [(6, 0, [line.id])],  # Link to sale order line
                             })
 
