@@ -1,0 +1,90 @@
+<odoo>
+    <template id="report_customer_statement">
+        <t t-call="web.external_layout">
+            <div class="header">
+                <h2>Customer Statement</h2>
+                <div style="text-align: right;">
+                    <t t-set="company_logo" t-value="customer.company_id.logo"/>
+                    <img t-att-src="company_logo" alt="Company Logo" style="height: 80px;"/>
+                </div>
+            </div>
+
+            <!-- Customer and Statement Details Section -->
+            <div class="statement-details">
+                <p>
+                    <strong>Customer Name:</strong>
+                    <t t-esc="customer.name"/>
+                </p>
+                <p>
+                    <strong>Statement Date:</strong>
+                    <t t-esc="datetime.datetime.now().strftime('%Y-%m-%d')"/>
+                </p>
+                <p>
+                    <strong>Total Outstanding Balance:</strong>
+                    <t t-esc="customer.credit"/>
+                </p>
+            </div>
+
+            <!-- Table for Invoice Details -->
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Invoice Number</th>
+                        <th>Date</th>
+                        <th>Activity</th>
+                        <th>Invoice Type</th>
+                        <th>Reference No</th>
+                        <th>Due Date</th>
+                        <th>Amount</th>
+                        <th>Balance</th>
+                        <th>Payment Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="customer.invoice_ids" t-as="inv">
+                        <tr>
+                            <td>
+                                <t t-esc="inv.name"/>
+                            </td>
+                            <td>
+                                <t t-esc="inv.invoice_date"/>
+                            </td>
+                            <td>
+                                <t t-esc="inv.move_type"/>
+                            </td>
+                            <td>
+                                <t t-esc="inv.journal_id.name"/>
+                            </td>
+                            <td>
+                                <t t-esc="inv.ref"/>
+                            </td>
+                            <td>
+                                <t t-esc="inv.invoice_date_due"/>
+                            </td>
+                            <td>
+                                <t t-esc="inv.amount_total" widget="monetary"
+                                   options="{'display_currency': inv.currency_id}"/>
+                            </td>
+                            <td>
+                                <t t-esc="inv.amount_residual" widget="monetary"
+                                   options="{'display_currency': inv.currency_id}"/>
+                            </td>
+                            <td>
+                                <t t-esc="inv.payment_state"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </t>
+    </template>
+
+    <template id="statement_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="customer">
+                <t t-call="customer_invoice_statement.report_customer_statement"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>
