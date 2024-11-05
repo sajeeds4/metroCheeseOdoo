@@ -86,10 +86,10 @@
                         <td></td>
                         <td></td>
                         <td class="text-center">
-                            <t t-esc="total_amount"/>
+                            <t t-esc="round(total_amount, 2)"/>
                         </td>
                         <td class="text-center">
-                            <t t-esc="total_blnc"/>
+                            <t t-esc="round(total_blnc, 2)"/>
                         </td>
                         <td></td>
                     </tr>
