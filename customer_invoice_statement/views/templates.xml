@@ -41,7 +41,11 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <t t-set="total_amount" t-value="0"/>
+                    <t t-set="total_blnc" t-value="0"/>
                     <t t-foreach="customer.invoice_ids" t-as="inv">
+                        <t t-set="total_amount" t-value="total_amount + inv.amount_total"/>
+                        <t t-set="total_blnc" t-value="total_blnc + inv.amount_residual"/>
                         <tr>
                             <td>
                                 <t t-esc="inv.name"/>
@@ -74,6 +78,22 @@
                             </td>
                         </tr>
                     </t>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center">
+                            <t t-esc="total_amount"/>
+                        </td>
+                        <td class="text-center">
+                            <t t-esc="total_blnc"/>
+                        </td>
+                        <td></td>
+                    </tr>
+
                 </tbody>
             </table>
         </t>
