@@ -1,81 +1,110 @@
 <odoo>
-<template id="report_customer_statement">
-    <t t-call="web.html_container">
-        <t t-foreach="docs" t-as="customer">
-            <!-- Table with no borders -->
-            <style>
-                .no-border-table th, .no-border-table td {
-                    border: none !important;
-                    padding: 5px;
-                }
-                .no-border-table {
-                    width: 100%;
-                    font-size: 12px;
-                    border-collapse: collapse;
-                }
-                .no-border-table thead th {
-                    font-weight: bold;
-                    text-align: left;
-                    background-color: #f7f7f7;
-                    padding: 8px;
-                }
-                .no-border-table tbody tr:nth-child(even) {
-                    background-color: #f9f9f9;
-                }
-            </style>
+    <template id="report_customer_statement">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="customer">
+                    <!-- Table with no borders -->
+                    <style>
+                        .no-border-table th, .no-border-table td {
+                        border: none !important;
+                        padding: 5px;
+                        }
+                        .no-border-table {
+                        width: 100%;
+                        font-size: 12px;
+                        border-collapse: collapse;
+                        }
+                        .no-border-table thead th {
+                        font-weight: bold;
+                        text-align: left;
+                        background-color: #f7f7f7;
+                        padding: 8px;
+                        }
+                        .no-border-table tbody tr:nth-child(even) {
+                        background-color: #f9f9f9;
+                        }
+                    </style>
 
-            <!-- Customer and Statement Details -->
-            <div>
-                <h2>Customer Statement</h2>
-                <p><strong>Customer Name:</strong> <t t-esc="customer.name"/></p>
-                <p><strong>Statement Date:</strong> <t t-esc="datetime.datetime.now().strftime('%Y-%m-%d')"/></p>
-            </div>
+                    <!-- Customer and Statement Details -->
+                    <div>
+                        <h2>Customer Statement</h2>
+                        <p>
+                            <strong>Customer Name:</strong>
+                            <t t-esc="customer.name"/>
+                        </p>
+                        <p>
+                            <strong>Statement Date:</strong>
+                            <t t-esc="datetime.datetime.now().strftime('%Y-%m-%d')"/>
+                        </p>
+                    </div>
 
-            <!-- Invoice Details Table -->
-            <table class="no-border-table">
-                <thead>
-                    <tr>
-                        <th>Invoice Number</th>
-                        <th>Date</th>
-<!--                        <th>Activity</th>-->
-<!--                        <th>Invoice Type</th>-->
-                        <th>Reference No</th>
-                        <th>Due Date</th>
-                        <th>Amount</th>
-                        <th>Balance</th>
-                        <th>Payment Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <t t-set="total_amount" t-value="0"/>
-                    <t t-set="total_blnc" t-value="0"/>
-                    <t t-foreach="customer.invoice_ids" t-as="inv">
-                        <t t-set="total_amount" t-value="total_amount + inv.amount_total"/>
-                        <t t-set="total_blnc" t-value="total_blnc + inv.amount_residual"/>
-                        <tr>
-                            <td><t t-esc="inv.name"/></td>
-                            <td><t t-esc="inv.invoice_date"/></td>
-<!--                            <td><t t-esc="inv.move_type"/></td>-->
-<!--                            <td><t t-esc="inv.journal_id.name"/></td>-->
-                            <td><t t-esc="inv.ref"/></td>
-                            <td><t t-esc="inv.invoice_date_due"/></td>
-                            <td><t t-esc="inv.amount_total" widget="monetary" options="{'display_currency': inv.currency_id}"/></td>
-                            <td><t t-esc="inv.amount_residual" widget="monetary" options="{'display_currency': inv.currency_id}"/></td>
-                            <td><t t-esc="inv.payment_state"/></td>
-                        </tr>
-                    </t>
-                    <tr>
+                    <!-- Invoice Details Table -->
+                    <table class="no-border-table">
+                        <thead>
+                            <tr>
+                                <th>Invoice Number</th>
+                                <th>Date</th>
+                                <!--                        <th>Activity</th>-->
+                                <!--                        <th>Invoice Type</th>-->
+                                <th>Reference No</th>
+                                <th>Due Date</th>
+                                <th>Amount</th>
+                                <th>Balance</th>
+                                <th>Payment Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="total_amount" t-value="0"/>
+                            <t t-set="total_blnc" t-value="0"/>
+                            <t t-foreach="customer.invoice_ids" t-as="inv">
+                                <t t-set="total_amount" t-value="total_amount + inv.amount_total"/>
+                                <t t-set="total_blnc" t-value="total_blnc + inv.amount_residual"/>
+                                <tr>
+                                    <td>
+                                        <t t-esc="inv.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="inv.invoice_date"/>
+                                    </td>
+                                    <!--                            <td><t t-esc="inv.move_type"/></td>-->
+                                    <!--                            <td><t t-esc="inv.journal_id.name"/></td>-->
+                                    <td>
+                                        <t t-esc="inv.ref"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="inv.invoice_date_due"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="inv.amount_total" widget="monetary"
+                                           options="{'display_currency': inv.currency_id}"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="inv.amount_residual" widget="monetary"
+                                           options="{'display_currency': inv.currency_id}"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="inv.payment_state"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr>
 
-                        <td colspan="4">Total</td>
-                        <td class="text-center"><t t-esc="round(total_amount, 2)"/></td>
-                        <td class="text-center"><t t-esc="round(total_blnc, 2)"/></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
+                                <td colspan="4">Total</td>
+                                <td class="text-center">
+                                    <t t-esc="round(total_amount, 2)"/>
+                                </td>
+                                <td class="text-center">
+                                    <t t-esc="round(total_blnc, 2)"/>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </t>
+            </t>
         </t>
-    </t>
-</template>
+
+    </template>
 
     <template id="statement_pdf">
         <t t-call="web.html_container">
