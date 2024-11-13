@@ -16,12 +16,10 @@ function sendCustomNotification(type, message) {
 }
 
 patch(ProductCatalogKanbanRecord.prototype, {
-//  setup() {
-//    super.setup(...arguments);
-//    this.doubleNumber = this.number * 2;
-//  },
+
+
     updateQuantity(quantity) {
-        if (quantity>this.props.record.data.available_qty){
+        if (quantity>this.props.record.data.available_qty && this.env.orderResModel === 'sale.order'){
                 this.action.doAction(
                 sendCustomNotification("warning", _t("You can't add Qty more than available Qty"))
                    );
