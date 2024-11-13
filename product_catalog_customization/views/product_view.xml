@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="product_view_kanban_catalog" model="ir.ui.view">
+        <field name="name">product.view.kanban.catalog.inherit.stock</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_view_kanban_catalog"/>
+        <field name="arch" type="xml">
+            <div name="o_kanban_price" position="after">
+                <div t-if="record.detailed_type.raw_value == 'product'" name="o_kanban_qty_available">
+                    <span>Available Qty:</span>
+                    <!--<t t-out="record.qty_available - record.outgoing_qty"/>-->
+
+                    <field name="available_qty"/>
+                    <!--<field name="uom_id" class="ms-1" groups="uom.group_uom"/>-->
+                </div>
+            </div>
+        </field>
+    </record>
+
+</odoo>
